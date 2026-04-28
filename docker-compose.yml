@@ -1,11 +1,11 @@
 services:
   api: &api
     image: ianlemee/rinha-backend-brute-force:latest
-    deploy:
-      resources:
-        limits:
-          cpus: "0.35"
-          memory: "160M"
+#    deploy:
+#      resources:
+#        limits:
+#          cpus: "0.35"
+#          memory: "160MB"
 
   api1:
     <<: *api
