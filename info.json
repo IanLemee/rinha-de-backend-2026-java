@@ -1,0 +1,7 @@
+{
+  "participants": ["Ian Francisco"],
+  "social": ["https://github.com/IanLemee", "https://www.linkedin.com/in/ianleme/"],
+  "source-code-repo": "https://github.com/IanLemee/rinha-de-backend-2026-java/tree/main",
+  "stack": ["java", "spring-boot", "nginx"],
+  "open_to_work": true
+}
