@@ -6,10 +6,12 @@ services:
         limits:
           cpus: "0.35"
           memory: "160MB"
+    depends_on:
+      - postgres
+    networks:
+      - db
 
   api1:
-    <<: *api
-  api2:
     <<: *api
 
   nginx:
@@ -19,11 +21,27 @@ services:
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
     depends_on:
+      - api
       - api1
-      - api2
-    cpuset: "0,2"
     deploy:
       resources:
         limits:
           cpus: "0.2"
           memory: "30M"
+    networks:
+      - db
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - db
+
+networks:
+  db:
