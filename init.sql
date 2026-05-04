@@ -9,3 +9,8 @@ CREATE TABLE IF NOT EXISTS reference_data(
     vectors vector(14),
     is_fraud boolean
 );
+
+COPY reference_data(vectors, is_fraud)
+    FROM PROGRAM 'zcat /docker-entrypoint-initdb.d/references.csv.gz'
+    DELIMITER ','
+    CSV;
