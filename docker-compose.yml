@@ -5,22 +5,22 @@ services:
       resources:
         limits:
           cpus: "0.35"
-          memory: "120MB"
+          memory: "130MB"
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     networks:
       - db
     environment:
-      - JAVA_TOOL_OPTIONS=-Xms80m -Xmx80m -XX:+UseSerialGC -XX:MaxMetaspaceSize=32m
+      - JAVA_TOOL_OPTIONS=-Xms64m -Xmx64m -XX:MaxMetaspaceSize=64m -XX:+UseSerialGC -Xss256k
 
   api1:
     <<: *api
 
   nginx:
     image: nginx:alpine
-    restart: always
     ports:
-      - "0.0.0.0:9999:9999"
+      - "9999:9999"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
     depends_on:
@@ -30,7 +30,7 @@ services:
       resources:
         limits:
           cpus: "0.10"
-          memory: "20MB"
+          memory: "10MB"
     networks:
       - db
 
@@ -50,9 +50,14 @@ services:
       resources:
         limits:
           cpus: "0.20"
-          memory: "90MB"
+          memory: "80MB"
     networks:
       - db
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 2s
+      timeout: 5s
+      retries: 15
 
 networks:
   db:
