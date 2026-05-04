@@ -10,9 +10,13 @@ services:
       - postgres
     networks:
       - db
+    environment:
+      - IS_SEEDER=true
 
   api1:
     <<: *api
+    environment:
+      - IS_SEEDER=false
 
   nginx:
     image: nginx:alpine
